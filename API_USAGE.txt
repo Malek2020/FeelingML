@@ -1,0 +1,91 @@
+# 📌 Utilisation de l'API d'Analyse des Sentiments
+
+## 1️⃣ Démarrer l'API
+Avant d'utiliser l'API, assurez-vous qu'elle est en cours d'exécution :
+$ python FeelingML.py
+
+L'API sera disponible à l'adresse :
+http://127.0.0.1:5000/
+
+---
+
+## 2️⃣ Endpoints de l'API
+
+### ✅ 1. Analyser des tweets
+- **URL :** /analyze
+- **Méthode :** POST
+- **Description :** Analyse une liste de tweets et retourne leur score de sentiment.
+
+📌 **Requête :**
+{
+    "tweets": [
+        "J'adore ce produit !",
+        "Expérience terrible !"
+    ]
+}
+
+📌 **Réponse :**
+{
+    "J'adore ce produit !": 0.93,
+    "Expérience terrible !": -0.80
+}
+
+---
+
+### ✅ 2. Réentraîner le modèle
+- **URL :** /retrain
+- **Méthode :** POST
+- **Description :** Réentraîne le modèle avec les dernières données de la base.
+
+📌 **Commande CURL :**
+$ curl -X POST http://127.0.0.1:5000/retrain
+
+📌 **Réponse :**
+{
+    "message": "Model retrained successfully with latest database data."
+}
+
+---
+
+### ✅ 3. Évaluer le modèle
+- **URL :** /evaluate
+- **Méthode :** GET
+- **Description :** Retourne un rapport de performance du modèle.
+
+📌 **Commande CURL :**
+$ curl -X GET http://127.0.0.1:5000/evaluate
+
+📌 **Réponse Exemple :**
+{
+    "positive_class": {
+        "confusion_matrix": [[50, 5], [3, 42]],
+        "report": {
+            "precision": 0.91,
+            "recall": 0.89,
+            "f1-score": 0.90
+        }
+    },
+    "negative_class": {
+        "confusion_matrix": [[48, 7], [4, 41]],
+        "report": {
+            "precision": 0.88,
+            "recall": 0.86,
+            "f1-score": 0.87
+        }
+    }
+}
+
+---
+
+## 3️⃣ Automatisation du Réentraînement
+Vous pouvez configurer un **cron job** pour automatiser le réentraînement du modèle.
+
+📌 **Exemple de Cron Job (exécute le réentraînement chaque jour à minuit) :**
+$ crontab -e
+
+Ajoutez cette ligne :
+0 0 * * * /usr/bin/python3 /chemin/vers/FeelingML.py --retrain
+
+---
+
+🚀 **L'API est maintenant prête à être utilisée !** 😊
